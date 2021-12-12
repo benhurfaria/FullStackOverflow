@@ -1,9 +1,14 @@
 import express from 'express';
 import cors from 'cors';
-import { Request, Response } from 'express';
+import userRouter from './routes/userRouter';
+import serverError from './middlewares/serverError';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-export default app;
+app.use(userRouter);
+
+app.use(serverError);
+
+export default app; 
