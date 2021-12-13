@@ -6,6 +6,14 @@ class NotFound extends Error{
     }
 }
 
+class AlreadyAnswered extends Error{
+    constructor() {
+        super('Já respondido');
+        this.name = 'AlreadyAnswered';
+        Object.setPrototypeOf(this, AlreadyAnswered.prototype);
+    }
+}
 export {
     NotFound,
+    AlreadyAnswered,
 }

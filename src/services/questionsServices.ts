@@ -1,7 +1,7 @@
 import Question from "../interfaces/questionInterface";
 import {DetailsQuestion, AnsweredQuestion} from "../interfaces/detailsQuestionInterface";
 import * as questionsRepository from '../repositories/questionsRepository';
-import { NotFound } from '../errors/errors';
+import { NotFound, AlreadyAnswered } from '../errors/errors';
 
 async function createQuestion(question: Question){
     const id = await questionsRepository.createQuestion(question);
@@ -39,7 +39,21 @@ async function getQuestionById(id: number){
     return questionReturn;
 }
 
+async function answerQuestion(id: number, token: string, answer: string){
+    const question = await questionsRepository.getQuestion(id);
+
+    if(!question) throw new NotFound();
+    if(question.answered) throw new AlreadyAnswered();
+
+    const idUser = await questionsRepository.getIdUser(token);
+
+    const user = await questionsRepository.getUser(idUser);
+
+    await questionsRepository.answerQuestion(id, answer, idUser);
+}
+
 export {
     createQuestion,
     getQuestionById,
+    answerQuestion,
 }

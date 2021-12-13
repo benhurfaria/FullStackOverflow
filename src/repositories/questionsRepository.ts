@@ -13,8 +13,28 @@ async function getQuestion(id: number){
     return result.rows[0];
 }
 
+async function getIdUser(token: string){
+    const result = await connection.query(`SELECT * FROM sessions WHERE token = $1;`,[token]);
+
+    if(!result) return false;
+
+    return result.rows[0].idUser;
+}
+
+async function getUser(id: number){
+    const result = await connection.query(`SELECT * FROM users WHERE id = $1;`, [id]);
+
+    return result.rows[0].name;
+}
+
+async function answerQuestion(id: number, answer: string, answeredBy: number){
+    await connection.query(`UPDATE questions SET answered = true, answer = $1, "answeredAt" = NOW(), "answeredBy" = $2 WHERE id = $3;`, [answer, answeredBy, id]);
+}
 
 export {
     createQuestion,
     getQuestion,
+    getIdUser,
+    answerQuestion,
+    getUser,
 }
