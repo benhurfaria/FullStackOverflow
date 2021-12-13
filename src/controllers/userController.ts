@@ -10,7 +10,7 @@ async function createUser(req: Request, res: Response, next: NextFunction): Prom
     if(validation.error){
         return res.sendStatus(400);
     }
-
+ 
     try{
         const token = await userService.createUser(user);
         return res.status(200).send({ token });
