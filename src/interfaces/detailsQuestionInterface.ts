@@ -19,7 +19,16 @@ interface AnsweredQuestion {
     answeredBy?: string;
 }
 
+interface UnansweredQuestion{
+    id: number;
+    question: string;
+    student: string;
+    class: string;
+    submitAt: string;
+}
+
 export {
     DetailsQuestion,
     AnsweredQuestion,
+    UnansweredQuestion,
 }

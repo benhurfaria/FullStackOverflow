@@ -37,7 +37,7 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction): 
     const token: string = req.headers.authorization?.replace('Bearer ', '');
     const answer: string = req.body.answer;
     const validation = answerSchema.validate(req.body);
-    
+
     if(validation.error) return res.sendStatus(400);
     if(!id || id <= 0|| !token) return res.status(400).send('Não foi possivel fazer a busca');
     try{
@@ -47,7 +47,17 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction): 
     }catch(error){
         if(error instanceof NotFound) return res.status(404).send(error.message);
         if(error instanceof AlreadyAnswered) return res.status(400).send(error.message);
-        console.log(error);
+        next(error);
+    }
+}
+
+async function getUnansweredQuestion(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    try{
+        const result = await questionsServices.getUnansweredQuestion();
+
+        return res.send(result);
+    }catch(error){
+        if(error instanceof NotFound) return res.status(404).send(error.message);
         next(error);
     }
 }
@@ -56,4 +66,5 @@ export {
     createQuestion,
     getQuestion,
     answerQuestion,
+    getUnansweredQuestion,
 }

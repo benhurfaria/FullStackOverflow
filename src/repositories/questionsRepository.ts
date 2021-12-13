@@ -31,10 +31,19 @@ async function answerQuestion(id: number, answer: string, answeredBy: number){
     await connection.query(`UPDATE questions SET answered = true, answer = $1, "answeredAt" = NOW(), "answeredBy" = $2 WHERE id = $3;`, [answer, answeredBy, id]);
 }
 
+async function getUnansweredQuestion(){
+    const result = await connection.query(`SELECT id, question, student, class, "submitAt" FROM questions WHERE answered = false;`);
+
+    if(!result) return false;
+
+    return result.rows;
+}
+
 export {
     createQuestion,
     getQuestion,
     getIdUser,
     answerQuestion,
     getUser,
+    getUnansweredQuestion,
 }

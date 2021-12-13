@@ -47,13 +47,19 @@ async function answerQuestion(id: number, token: string, answer: string){
 
     const idUser = await questionsRepository.getIdUser(token);
 
-    const user = await questionsRepository.getUser(idUser);
-
     await questionsRepository.answerQuestion(id, answer, idUser);
+}
+
+async function getUnansweredQuestion(){
+    const result = await questionsRepository.getUnansweredQuestion();
+    if(!result) throw new NotFound();
+
+    return result;
 }
 
 export {
     createQuestion,
     getQuestionById,
     answerQuestion,
+    getUnansweredQuestion,
 }
