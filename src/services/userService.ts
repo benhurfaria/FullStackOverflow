@@ -3,15 +3,13 @@ import User from '../interfaces/userInterface';
 import * as userRepository from '../repositories/userRepository';
 
 async function createUser(user: User): Promise<string> {
-    const id: number = await userRepository.createUser(user);
+  const id: number = await userRepository.createUser(user);
 
-    const token: string = uuid();
+  const token: string = uuid();
 
-    await userRepository.createUserSession(id, token);
+  await userRepository.createUserSession(id, token);
 
-    return token;
+  return token;
 }
 
-export{
-    createUser,
-}
+export { createUser };

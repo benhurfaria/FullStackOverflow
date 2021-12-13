@@ -7,4 +7,4 @@ const path =
     ? '.env'
     : '.env';
 
-dotenv.config({ path }); 
+dotenv.config({ path });
